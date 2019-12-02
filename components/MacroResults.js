@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  AsyncStorage,
-  TouchableHighlight,
-} from 'react-native';
+import {StyleSheet, View, Text, TouchableHighlight} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
@@ -109,13 +104,13 @@ export default class MacroResults extends React.Component {
       case 'lightactive':
         TDEE = this.state.bmr * 1.375;
         break;
-      case 'modactive':
+      case 'active':
         TDEE = this.state.bmr * 1.55;
         break;
       case 'veryactive':
         TDEE = this.state.bmr * 1.725;
         break;
-      case 'extremeactive':
+      case 'extreme':
         TDEE = this.state.bmr * 1.9;
         break;
       default:

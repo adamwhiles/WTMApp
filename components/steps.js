@@ -10,8 +10,8 @@ import {
   ImageBackground,
   Image,
   KeyboardAvoidingView,
-  AsyncStorage,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {TextInput} from 'react-native-paper';
 import CustomRadioButton from './CustomRadioButton';
 import {vw, vh} from 'react-native-expo-viewport-units';

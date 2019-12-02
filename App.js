@@ -11,8 +11,8 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
-  AsyncStorage,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
