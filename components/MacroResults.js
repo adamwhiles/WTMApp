@@ -8,7 +8,6 @@ import {
   faBacon,
   faCheese,
   faQuestionCircle,
-  faVihara,
 } from '@fortawesome/free-solid-svg-icons';
 import {Switch} from 'react-native-paper';
 import InfoModal from './Modal';

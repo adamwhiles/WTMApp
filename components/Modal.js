@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, TouchableHighlight, View, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 import {Dialog, Portal, Text} from 'react-native-paper';
 import {vw, vh} from 'react-native-expo-viewport-units';
 

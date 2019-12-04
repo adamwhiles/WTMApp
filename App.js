@@ -1,23 +1,14 @@
-import React, {Fragment} from 'react';
-import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
   ImageBackground,
   Image,
-  TextInput,
   KeyboardAvoidingView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from 'react-native-simple-radio-button';
 import Steps from './components/steps';
 import MacroResults from './components/MacroResults';
 

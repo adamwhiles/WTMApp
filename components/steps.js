@@ -1,23 +1,11 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  ImageBackground,
-  Image,
-  KeyboardAvoidingView,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {TextInput} from 'react-native-paper';
 import CustomRadioButton from './CustomRadioButton';
 import {vw, vh} from 'react-native-expo-viewport-units';
-import MacroResults from './MacroResults';
 import InfoModal from './Modal';
-import {thistle} from 'color-name';
 
 export default class Steps extends React.Component {
   constructor(props) {
