@@ -248,7 +248,7 @@ export default class Steps extends React.Component {
                     },
                   }}
                   //style={styles.inputWeight}
-                  label="Feet (Inch)"
+                  label="Height (Inch)"
                   autoCapitalize="none"
                   value={this.state.userInches}
                   onChangeText={this.handleInches}
