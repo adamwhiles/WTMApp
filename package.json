@@ -21,10 +21,13 @@
     "react-native-gesture-handler": "^1.5.2",
     "react-native-paper": "^3.2.1",
     "react-native-progress-steps": "^1.2.8",
+    "react-native-reanimated": "^1.4.0",
+    "react-native-screens": "^1.0.0-alpha.23",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-svg": "^9.13.3",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
+    "react-navigation-drawer": "^2.3.3",
     "typescript": "^3.7.2",
     "ws": "^3.3.3"
   },
