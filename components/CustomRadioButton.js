@@ -7,7 +7,7 @@ export default class CustomRadioButton extends React.Component {
     const {options, value, type, onChange} = this.props;
 
     return (
-      <View>
+      <View style={styles.buttonContainer}>
         {options.map(item => {
           return (
             <View key={item.key} style={styles.buttonContainer}>
@@ -29,23 +29,24 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginLeft: 15,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 15,
     color: 'white',
   },
   labelStyle: {
     color: 'white',
-    marginRight: 18,
+    marginLeft: 5,
     fontSize: vh(1.75),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   circle: {
     height: 20,
     width: 20,
     borderRadius: 10,
-    borderWidth: 1,
     padding: 10,
-    marginRight: 10,
+    borderWidth: 1,
     borderColor: '#ACACAC',
     alignItems: 'center',
     justifyContent: 'center',

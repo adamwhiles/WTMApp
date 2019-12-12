@@ -145,7 +145,7 @@ export default class Steps extends React.Component {
             nextBtnTextStyle={styles.stepButtonStyle}
             errors={this.state.stepErrors}
             onNext={this.validateFirstStep}>
-            <View style={{marginBottom: 20}}>
+            <View>
               <CustomRadioButton
                 options={genderOptions}
                 type="userGender"
@@ -302,7 +302,7 @@ let goalOptions = [
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 23,
+    paddingTop: 0,
   },
   stepButtonStyle: {
     backgroundColor: '#fff',

@@ -69,17 +69,19 @@ export default class HomeScreen extends React.Component {
         <KeyboardAvoidingView
           style={{flex: 1}}
           behavior="padding"
-          keyboardVerticalOffset="-35"
+          keyboardVerticalOffset="5"
           enabled>
           <SafeAreaView>
-            <View>
-              <Button icon="menu" />
-            </View>
-            <View style={{paddingHorizontal: 20, color: '#fff'}}>
+            <View
+              style={{
+                paddingHorizontal: 0,
+                color: '#fff',
+                alignItems: 'center',
+              }}>
               <Image
                 source={require('../assets/wtmacro_logo.png')}
-                resizeMode="stretch"
-                style={{width: '100%'}}
+                resizeMode="contain"
+                style={{width: '95%'}}
               />
               <View>
                 <Text
