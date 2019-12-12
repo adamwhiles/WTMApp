@@ -158,8 +158,6 @@ export default class Steps extends React.Component {
                   style={{
                     width: vw(40),
                   }}
-                  //underlineColor="black"
-                  //selectionColor="#66fcf1"
                   dense="false"
                   label="Age"
                   theme={{
@@ -178,15 +176,12 @@ export default class Steps extends React.Component {
                     width: vw(40),
                     marginLeft: vw(5),
                   }}
-                  //underlineColor="black"
-                  //selectionColor="#66fcf1"
                   dense="false"
                   theme={{
                     colors: {
                       primary: 'black',
                     },
                   }}
-                  //style={styles.inputWeight}
                   label="Weight (lbs)"
                   value={this.state.userWeight}
                   autoCapitalize="none"
@@ -206,8 +201,6 @@ export default class Steps extends React.Component {
                   style={{
                     width: vw(40),
                   }}
-                  //underlineColor="black"
-                  //selectionColor="#66fcf1"
                   dense="false"
                   theme={{
                     colors: {
@@ -216,9 +209,7 @@ export default class Steps extends React.Component {
                   }}
                   label="Height (FT)"
                   value={this.state.userFeet}
-                  //autoCapitalize="none"
                   onChangeText={this.handleFeet}
-                  //color="lightblue"
                   keyboardType="number-pad"
                 />
                 <TextInput
@@ -227,15 +218,12 @@ export default class Steps extends React.Component {
                     width: vw(40),
                     marginLeft: vw(5),
                   }}
-                  //underlineColor="black"
-                  //selectionColor="#66fcf1"
                   dense="false"
                   theme={{
                     colors: {
                       primary: 'black',
                     },
                   }}
-                  //style={styles.inputWeight}
                   label="Height (Inch)"
                   autoCapitalize="none"
                   value={this.state.userInches}
