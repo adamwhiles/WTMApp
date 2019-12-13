@@ -1,8 +1,8 @@
 import React from 'react';
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Text, KeyboardAvoidingView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import {TextInput} from 'react-native-paper';
+import {TextInput, Button} from 'react-native-paper';
 import CustomRadioButton from './CustomRadioButton';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import InfoModal from './Modal';
@@ -22,6 +22,7 @@ export default class Steps extends React.Component {
       stepErrors: false,
       showFirstRunModal: false,
       disableNext: true,
+      activeStep: 0,
     };
     this.handleRadioChange = this.handleRadioChange.bind(this);
   }
@@ -71,6 +72,7 @@ export default class Steps extends React.Component {
 
   handleAge = age => {
     this.setState({userAge: age});
+    console.log('age updated');
   };
   handleWeight = weight => {
     this.setState({userWeight: weight});
@@ -105,6 +107,13 @@ export default class Steps extends React.Component {
     this.props.showResults(user);
   };
 
+  advanceStep = () => {
+    console.log('advanceStep Clicked');
+    let currentStep = this.state.activeStep;
+    console.log('current step is: ' + this.state.activeStep);
+    this.setState({activeStep: currentStep + 1});
+  };
+
   validateFirstStep = () => {
     if (
       this.state.userAge != null &&
@@ -127,11 +136,9 @@ export default class Steps extends React.Component {
       activeLabelColor: 'white',
       activeStepNumColor: 'white',
       labelColor: 'white',
+      activeStep: this.state.activeStep,
     };
 
-    if (this.state.showResults === true) {
-      progressProps.activeStep = 3;
-    }
     return (
       <>
         <InfoModal
@@ -139,7 +146,15 @@ export default class Steps extends React.Component {
           visible={this.state.showFirstRunModal}
           type="firstrun"
         />
-        <ProgressSteps {...progressProps}>
+        <ProgressSteps
+          activeStepIconBorderColor="#66fcf1"
+          completedProgressBarColor="#66fcf1"
+          completedStepIconColor="#66fcf1"
+          completedCheckColor="black"
+          activeLabelColor="white"
+          activeStepNumColor="white"
+          labelColor="white"
+          activeStep={this.state.activeStep}>
           <ProgressStep
             label="The Basics"
             nextBtnTextStyle={styles.stepButtonStyle}

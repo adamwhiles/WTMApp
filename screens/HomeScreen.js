@@ -66,11 +66,7 @@ export default class HomeScreen extends React.Component {
       <ImageBackground
         source={require('../assets/background2.png')}
         style={{width: '100%', height: '100%'}}>
-        <KeyboardAvoidingView
-          style={{flex: 1}}
-          behavior="padding"
-          keyboardVerticalOffset="5"
-          enabled>
+        <KeyboardAvoidingView style={{flex: 1}} keyboardVerticalOffset="-5">
           <SafeAreaView>
             <View
               style={{
