@@ -5,28 +5,54 @@ var {vw, vh, vmin, vmax} = require('react-native-expo-viewport-units');
 export default class CustomRadioButton extends React.Component {
   render() {
     const {options, value, type, onChange} = this.props;
-
-    return (
-      <View style={styles.buttonContainer}>
-        {options.map(item => {
-          return (
-            <View key={item.key} style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.circle}
-                onPress={() => onChange(type, item.key)}>
-                {value === item.key && <View style={styles.checkedCircle} />}
-              </TouchableOpacity>
-              <Text style={styles.labelStyle}>{item.text}</Text>
-            </View>
-          );
-        })}
-      </View>
-    );
+    if (type === 'userGender') {
+      return (
+        <View style={styles.buttonContainerGender}>
+          {options.map(item => {
+            return (
+              <View key={item.key} style={styles.buttonContainerGender}>
+                <TouchableOpacity
+                  style={styles.circle}
+                  onPress={() => onChange(type, item.key)}>
+                  {value === item.key && <View style={styles.checkedCircle} />}
+                </TouchableOpacity>
+                <Text style={styles.labelStyle}>{item.text}</Text>
+              </View>
+            );
+          })}
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          {options.map(item => {
+            return (
+              <View key={item.key} style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.circle}
+                  onPress={() => onChange(type, item.key)}>
+                  {value === item.key && <View style={styles.checkedCircle} />}
+                </TouchableOpacity>
+                <Text style={styles.labelStyle}>{item.text}</Text>
+              </View>
+            );
+          })}
+        </View>
+      );
+    }
   }
 }
 
 const styles = StyleSheet.create({
   buttonContainer: {
+    marginLeft: 15,
+    flexDirection: 'row',
+    //justifyContent: 'center',
+    //alignItems: 'center',
+    marginBottom: 15,
+    color: 'white',
+  },
+  buttonContainerGender: {
     marginLeft: 15,
     flexDirection: 'row',
     justifyContent: 'center',
