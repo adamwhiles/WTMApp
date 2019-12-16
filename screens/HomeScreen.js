@@ -21,35 +21,17 @@ export default class HomeScreen extends React.Component {
       showResults: false,
     };
 
-    this.weightData = [
-      {
-        date: new Date(2019, 11, 20),
-        weight: '173.9',
-      },
-      {
-        date: new Date(2019, 11, 22),
-        weight: '172.9',
-      },
-      {
-        date: new Date(2019, 11, 23),
-        weight: '173.1',
-      },
-      {
-        date: new Date(2019, 11, 19),
-        weight: '174.5',
-      },
-    ];
     this.showResults = this.showResults.bind(this);
     this.startOver = this.startOver.bind(this);
   }
 
   async componentDidMount() {
+    //await AsyncStorage.removeItem('newWeights');
     let bmr = await AsyncStorage.getItem('bmr');
     if (bmr !== null) {
       console.log('in index, bmr is not null');
       this.updateEntries().then(() => this.setState({showResults: true}));
     }
-    await AsyncStorage.setItem('newWeights', JSON.stringify(this.weightData));
   }
 
   startOver = () => {

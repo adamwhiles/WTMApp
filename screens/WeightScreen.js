@@ -18,6 +18,8 @@ import {createStackNavigator, createAppContainer} from 'react-navigation';
 import {LineChart} from 'react-native-chart-kit';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
+import AddWeightModal from '../components/AddWeightModal';
+
 const data = {
   labels: [],
   datasets: [
@@ -36,26 +38,28 @@ export default class WeightScreen extends React.Component {
       userWeights: null,
       weightDates: [],
       weightValues: [],
-      newData: null,
+      newData: [],
+      modalVisible: false,
     };
+
+    this.addWeight = this.addWeight.bind(this);
   }
 
   async componentDidMount() {
-    let dates = await AsyncStorage.getItem('weightDates');
-    let weights = await AsyncStorage.getItem('weightValues');
     let newData = await AsyncStorage.getItem('newWeights');
     newData = JSON.parse(newData);
-    let parsed = weights;
-    //this.initializeWeights(dates, weights);
-    this.initializeWeights2(newData);
-    console.log(parsed);
+    if (newData != null) {
+      console.log('new data is not null');
+      console.log(newData);
+      this.initializeWeights2(newData);
+    }
   }
 
   initializeWeights2 = async data => {
     await data.sort((a, b) => {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
-    await this.setState({newData: data});
+    await this.setState({newData: data, modalVisible: false});
   };
 
   formatDate = date => {
@@ -70,11 +74,51 @@ export default class WeightScreen extends React.Component {
     return `${m}/${d}/${y}`;
   };
 
+  addWeight = async (date, weight) => {
+    console.log('add weight called');
+    let newWeight = {
+      date: date,
+      weight: weight,
+    };
+    this.state.newData.push(newWeight);
+    this.initializeWeights2(this.state.newData);
+    let currentWeights = await AsyncStorage.getItem('newWeights');
+    if (currentWeights === null) {
+      let d = new Array();
+      d.push(newWeight);
+      AsyncStorage.setItem('newWeights', JSON.stringify(d));
+    } else {
+      try {
+        await AsyncStorage.getItem('newWeights').then(weights => {
+          weights = JSON.parse(weights);
+          weights.push(newWeight);
+          AsyncStorage.setItem('newWeights', JSON.stringify(weights));
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    let d3 = await AsyncStorage.getItem('newWeights');
+    console.log('weights affter updating');
+    console.log(d3);
+  };
+
+  showAddModal = () => {
+    this.setState({modalVisible: true});
+  };
+
   render() {
-    if (this.state.newData != null) {
+    data.labels = [];
+    data.datasets[0].data = [];
+    if (this.state.newData != null && this.state.newData != []) {
       this.state.newData.map(value => {
+        console.log('inside map');
+        console.log(value.date);
+        console.log(value.weight);
         data.labels.push(this.formatDate(value.date));
-        data.datasets[0].data.push(value.weight);
+        data.datasets[0].data.push(parseFloat(value.weight));
+        console.log(data);
+        console.log(data.datasets[0].data);
       });
     }
 
@@ -82,6 +126,11 @@ export default class WeightScreen extends React.Component {
       <ImageBackground
         source={require('../assets/background2.png')}
         style={{width: '100%', height: '100%'}}>
+        <AddWeightModal
+          visible={this.state.modalVisible}
+          date={new Date()}
+          addWeight={this.addWeight}
+        />
         <KeyboardAvoidingView
           style={{flex: 1}}
           behavior="padding"
@@ -144,22 +193,7 @@ export default class WeightScreen extends React.Component {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <TextInput
-                  style={{
-                    width: vw(40),
-                  }}
-                  label="Weight"
-                  theme={{
-                    colors: {
-                      primary: 'black',
-                    },
-                  }}
-                  value={this.state.userAge}
-                  autoCapitalize="none"
-                  onChangeText={this.handleAge}
-                  keyboardType="number-pad"
-                />
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.showAddModal}>
                   <View
                     style={{
                       padding: 23,
@@ -167,7 +201,7 @@ export default class WeightScreen extends React.Component {
                       color: 'black',
                       marginLeft: 5,
                     }}>
-                    <Text>Enter</Text>
+                    <Text>Add New Weight</Text>
                   </View>
                 </TouchableOpacity>
               </View>
