@@ -112,7 +112,7 @@ export default class WeightScreen extends React.Component {
     data.labels = [];
     data.datasets[0].data = [];
     if (this.state.newData != null && this.state.newData != []) {
-      this.state.newData.map(value => {
+      this.state.newData.slice(0, 6).map(value => {
         console.log('inside map');
         console.log(value.date);
         console.log(value.weight);
@@ -163,7 +163,6 @@ export default class WeightScreen extends React.Component {
                     height={220}
                     yAxisLabel={''}
                     yAxisSuffix={'lb'}
-                    verticalLabelRotation={30}
                     chartConfig={{
                       backgroundColor: '#e26a00',
                       backgroundGradientFrom: '#264d73',
