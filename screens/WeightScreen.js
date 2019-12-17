@@ -16,7 +16,11 @@ import {vw, vh} from 'react-native-expo-viewport-units';
 import AsyncStorage from '@react-native-community/async-storage';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 import {LineChart} from 'react-native-chart-kit';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native-gesture-handler';
 
 import AddWeightModal from '../components/AddWeightModal';
 
@@ -98,9 +102,6 @@ export default class WeightScreen extends React.Component {
         console.log(err);
       }
     }
-    let d3 = await AsyncStorage.getItem('newWeights');
-    console.log('weights affter updating');
-    console.log(d3);
   };
 
   showAddModal = () => {
@@ -162,6 +163,7 @@ export default class WeightScreen extends React.Component {
                     height={220}
                     yAxisLabel={''}
                     yAxisSuffix={'lb'}
+                    verticalLabelRotation={30}
                     chartConfig={{
                       backgroundColor: '#e26a00',
                       backgroundGradientFrom: '#264d73',
@@ -174,7 +176,7 @@ export default class WeightScreen extends React.Component {
                         borderRadius: 16,
                       },
                       propsForDots: {
-                        r: '6',
+                        r: '5',
                         strokeWidth: '2',
                         stroke: '#336699',
                       },
@@ -182,6 +184,7 @@ export default class WeightScreen extends React.Component {
                     //bezier
                     style={{
                       marginVertical: 8,
+                      //padding: 10,
                       borderRadius: 16,
                     }}
                   />
@@ -200,11 +203,32 @@ export default class WeightScreen extends React.Component {
                       backgroundColor: '#9fbfdf',
                       color: 'black',
                       marginLeft: 5,
+
+                      marginBottom: 10,
                     }}>
                     <Text>Add New Weight</Text>
                   </View>
                 </TouchableOpacity>
               </View>
+            </View>
+            <View style={styles.flatlistContainer}>
+              <FlatList
+                data={this.state.newData.reverse()}
+                renderItem={({item, index}) => (
+                  <View
+                    style={
+                      index % 2 === 0
+                        ? styles.flatlistFirst
+                        : styles.flatlistSecond
+                    }>
+                    <Text style={styles.date}>
+                      {this.formatDate(item.date)}
+                    </Text>
+                    <Text style={styles.weight}>{item.weight}</Text>
+                  </View>
+                )}
+                keyExtractor={item => item.date}
+              />
             </View>
           </SafeAreaView>
         </KeyboardAvoidingView>
@@ -212,3 +236,31 @@ export default class WeightScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  flatlistContainer: {
+    height: Dimensions.get('window').height * vh(0.043),
+    //marginBottom: 60,
+  },
+  flatlistSecond: {
+    padding: 20,
+    flexDirection: 'row',
+    backgroundColor: 'rgba(66, 95, 168, 0.4)',
+    color: 'white',
+  },
+  flatlistFirst: {
+    padding: 20,
+    flexDirection: 'row',
+    backgroundColor: 'rgba(86, 126, 227, 0.4)',
+    color: 'white',
+  },
+  date: {
+    alignSelf: 'flex-start',
+    flex: 1,
+    color: 'white',
+  },
+  weight: {
+    alignSelf: 'flex-end',
+    color: 'white',
+  },
+});
