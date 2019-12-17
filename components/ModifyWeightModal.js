@@ -4,10 +4,10 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {Dialog, Portal, Text, TextInput} from 'react-native-paper';
 import {vw, vh} from 'react-native-expo-viewport-units';
 
-export default class AddWeightModal extends React.Component {
+export default class ModifyWeightModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {date: new Date(), weight: null};
+    this.state = {weight: null};
   }
 
   handleWeight = weight => {
@@ -18,15 +18,15 @@ export default class AddWeightModal extends React.Component {
   };
   submit = () => {
     let weightRegEx = /^\d{2,3}\.\d{1}$/;
-    if (this.state.weight > 0 && this.state.weight !== null) {
+    if (this.state.weight === 0 || this.state.weight === null) {
+      alert('Please Enter A Valid Weight');
+    } else {
       let isValid = weightRegEx.test(this.state.weight);
       if (isValid) {
-        this.props.addWeight(this.state.date, this.state.weight);
+        this.props.modifyWeight(this.props.entry, this.state.weight);
       } else {
         alert('Please Enter A Valid Weight (ex 136 or 136.2)');
       }
-    } else {
-      alert('Please Enter A Valid Weight');
     }
   };
   render() {
@@ -38,12 +38,6 @@ export default class AddWeightModal extends React.Component {
           onDismiss={() => this.props.close()}>
           <Dialog.ScrollArea>
             <View>
-              <DateTimePicker
-                value={this.state.date}
-                mode={'date'}
-                onChange={this.setDate}
-                maximumDate={new Date()}
-              />
               <View
                 style={{
                   flexDirection: 'row',
@@ -60,7 +54,7 @@ export default class AddWeightModal extends React.Component {
                       primary: 'black',
                     },
                   }}
-                  value={this.state.weight}
+                  placeholder={this.props.entry.weight}
                   autoCapitalize="none"
                   onChangeText={this.handleWeight}
                   keyboardType="numeric"
@@ -73,7 +67,7 @@ export default class AddWeightModal extends React.Component {
                       color: 'black',
                       marginLeft: 5,
                     }}>
-                    <Text>Add Weight</Text>
+                    <Text>Edit Weight</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.props.close()}>

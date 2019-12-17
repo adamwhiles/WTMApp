@@ -21,8 +21,12 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native-gesture-handler';
+import {SwipeListView} from 'react-native-swipe-list-view';
 
 import AddWeightModal from '../components/AddWeightModal';
+import ModifyWeightModal from '../components/ModifyWeightModal';
+import {isTemplateMiddleOrTemplateTail} from 'typescript';
+import {thisTypeAnnotation} from '@babel/types';
 
 const data = {
   labels: [],
@@ -44,17 +48,17 @@ export default class WeightScreen extends React.Component {
       weightValues: [],
       newData: [],
       modalVisible: false,
+      modifyModalVisible: false,
     };
 
     this.addWeight = this.addWeight.bind(this);
+    this.modifyWeight = this.modifyWeight.bind(this);
   }
 
   async componentDidMount() {
     let newData = await AsyncStorage.getItem('newWeights');
     newData = JSON.parse(newData);
     if (newData != null) {
-      console.log('new data is not null');
-      console.log(newData);
       this.initializeWeights2(newData);
     }
   }
@@ -108,20 +112,46 @@ export default class WeightScreen extends React.Component {
     this.setState({modalVisible: true});
   };
 
+  showModifyModal = item => {
+    console.log('modify weight called');
+    console.log(item.item.weight);
+    this.setState({modifyWeight: item.item, modifyModalVisible: true});
+  };
+
+  weightDelete = async item => {
+    let weights = this.state.newData;
+    let newWeights = weights.filter(
+      entry =>
+        entry.date !== item.item.date && entry.weight !== item.item.weight,
+    );
+    await AsyncStorage.removeItem('newWeights');
+    await AsyncStorage.setItem('newWeights', JSON.stringify(newWeights));
+    this.setState({newData: newWeights});
+  };
+
+  modifyWeight = async (item, weight) => {
+    let weights = this.state.newData;
+    let targetWeight = weights.findIndex(
+      entry => entry.date === item.date && entry.weight === item.weight,
+    );
+    weights[targetWeight].weight = weight;
+    await AsyncStorage.removeItem('newWeights');
+    await AsyncStorage.setItem('newWeights', JSON.stringify(weights.reverse()));
+    this.setState({newData: weights.reverse(), modifyModalVisible: false});
+  };
+
   render() {
     data.labels = [];
     data.datasets[0].data = [];
-    if (this.state.newData != null && this.state.newData != []) {
-      this.state.newData.slice(0, 6).map(value => {
-        console.log('inside map');
-        console.log(value.date);
-        console.log(value.weight);
-        data.labels.push(this.formatDate(value.date));
-        data.datasets[0].data.push(parseFloat(value.weight));
-        console.log(data);
-        console.log(data.datasets[0].data);
+    if (this.state.newData != null && this.state.newData !== []) {
+      this.state.newData.slice(0, vh(0.75)).map(value => {
+        if (value.weight > 0) {
+          data.labels.push(this.formatDate(value.date));
+          data.datasets[0].data.push(parseFloat(value.weight));
+        }
       });
     }
+    let reversedList = this.state.newData.slice().reverse();
 
     return (
       <ImageBackground
@@ -131,7 +161,19 @@ export default class WeightScreen extends React.Component {
           visible={this.state.modalVisible}
           date={new Date()}
           addWeight={this.addWeight}
+          close={() => this.setState({modalVisible: false})}
         />
+        {this.state.modifyModalVisible ? (
+          <ModifyWeightModal
+            visible={this.state.modifyModalVisible}
+            entry={this.state.modifyWeight}
+            modifyWeight={this.modifyWeight}
+            close={() =>
+              this.setState({modifyModalVisible: false, modifyWeight: null})
+            }
+          />
+        ) : null}
+
         <KeyboardAvoidingView
           style={{flex: 1}}
           behavior="padding"
@@ -199,20 +241,20 @@ export default class WeightScreen extends React.Component {
                   <View
                     style={{
                       padding: 23,
-                      backgroundColor: '#9fbfdf',
+                      backgroundColor: '#66A6C3',
                       color: 'black',
                       marginLeft: 5,
 
                       marginBottom: 10,
                     }}>
-                    <Text>Add New Weight</Text>
+                    <Text style={{color: 'white'}}>Add New Weight</Text>
                   </View>
                 </TouchableOpacity>
               </View>
             </View>
             <View style={styles.flatlistContainer}>
-              <FlatList
-                data={this.state.newData.reverse()}
+              <SwipeListView
+                data={reversedList}
                 renderItem={({item, index}) => (
                   <View
                     style={
@@ -226,7 +268,23 @@ export default class WeightScreen extends React.Component {
                     <Text style={styles.weight}>{item.weight}</Text>
                   </View>
                 )}
-                keyExtractor={item => item.date}
+                keyExtractor={(item, index) => item.date + index}
+                renderHiddenItem={(item, index) => (
+                  <View style={styles.backRow}>
+                    <TouchableOpacity
+                      style={styles.editButton}
+                      onPress={() => this.showModifyModal(item)}>
+                      <Text>Edit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.deleteButton}
+                      onPress={() => this.weightDelete(item)}>
+                      <Text>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                leftOpenValue={75}
+                rightOpenValue={-140}
               />
             </View>
           </SafeAreaView>
@@ -244,14 +302,29 @@ const styles = StyleSheet.create({
   flatlistSecond: {
     padding: 20,
     flexDirection: 'row',
-    backgroundColor: 'rgba(66, 95, 168, 0.4)',
+    backgroundColor: '#507585',
     color: 'white',
   },
   flatlistFirst: {
     padding: 20,
     flexDirection: 'row',
-    backgroundColor: 'rgba(86, 126, 227, 0.4)',
+    backgroundColor: '#2b4967',
     color: 'white',
+  },
+  backRow: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+  },
+  editButton: {
+    alignContent: 'center',
+    color: 'white',
+    backgroundColor: '#c2e2db',
+    padding: 20,
+  },
+  deleteButton: {
+    color: 'white',
+    backgroundColor: '#cf9e73',
+    padding: 20,
   },
   date: {
     alignSelf: 'flex-start',
