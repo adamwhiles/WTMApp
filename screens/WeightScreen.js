@@ -152,12 +152,15 @@ export default class WeightScreen extends React.Component {
     data.labels = [];
     data.datasets[0].data = [];
     if (this.state.newData != null && this.state.newData !== []) {
-      this.state.newData.slice(0, vh(0.75)).map(value => {
-        if (value.weight > 0) {
-          data.labels.push(this.formatDate(value.date));
-          data.datasets[0].data.push(parseFloat(value.weight));
-        }
-      });
+      console.log(this.state.newData);
+      this.state.newData
+        .slice(this.state.newData.length - vh(1.65))
+        .map(value => {
+          if (value.weight > 0) {
+            data.labels.push(this.formatDate(value.date));
+            data.datasets[0].data.push(parseFloat(value.weight));
+          }
+        });
     }
     let reversedList = this.state.newData.slice().reverse();
 
