@@ -84,23 +84,37 @@ export default class WeightScreen extends React.Component {
       date: date,
       weight: weight,
     };
-    this.state.newData.push(newWeight);
-    this.initializeWeights2(this.state.newData);
-    let currentWeights = await AsyncStorage.getItem('newWeights');
-    if (currentWeights === null) {
-      let d = new Array();
-      d.push(newWeight);
-      AsyncStorage.setItem('newWeights', JSON.stringify(d));
+    console.log('add weight called with date of: ' + this.formatDate(date));
+    let dateInUse = this.dateInUse(this.state.newData, this.formatDate(date));
+    if (dateInUse) {
+      alert('You already have an entry for this date');
     } else {
-      try {
-        await AsyncStorage.getItem('newWeights').then(weights => {
-          weights = JSON.parse(weights);
-          weights.push(newWeight);
-          AsyncStorage.setItem('newWeights', JSON.stringify(weights));
-        });
-      } catch (err) {
-        console.log(err);
+      this.state.newData.push(newWeight);
+      this.initializeWeights2(this.state.newData);
+      let currentWeights = await AsyncStorage.getItem('newWeights');
+      if (currentWeights === null) {
+        let d = new Array();
+        d.push(newWeight);
+        AsyncStorage.setItem('newWeights', JSON.stringify(d));
+      } else {
+        try {
+          await AsyncStorage.getItem('newWeights').then(weights => {
+            weights = JSON.parse(weights);
+            weights.push(newWeight);
+            AsyncStorage.setItem('newWeights', JSON.stringify(weights));
+          });
+        } catch (err) {
+          console.log(err);
+        }
       }
+    }
+  };
+
+  dateInUse = (list, date) => {
+    if (list.some(entry => this.formatDate(entry.date) === date)) {
+      return true;
+    } else {
+      return false;
     }
   };
 
