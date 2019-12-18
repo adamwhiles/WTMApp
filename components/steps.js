@@ -72,7 +72,6 @@ export default class Steps extends React.Component {
 
   handleAge = age => {
     this.setState({userAge: age});
-    console.log('age updated');
   };
   handleWeight = weight => {
     this.setState({userWeight: weight});

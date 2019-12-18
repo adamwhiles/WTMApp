@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, KeyboardAvoidingView} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Dialog, Portal, Text, TextInput} from 'react-native-paper';
 import {vw, vh} from 'react-native-expo-viewport-units';
@@ -35,9 +35,10 @@ export default class AddWeightModal extends React.Component {
         <Dialog
           style={styles.modalStyle}
           visible={this.props.visible}
-          onDismiss={() => this.props.close()}>
+          onDismiss={() => this.props.close()}
+          dismissable={false}>
           <Dialog.ScrollArea>
-            <View>
+            <KeyboardAvoidingView>
               <DateTimePicker
                 value={this.state.date}
                 mode={'date'}
@@ -88,7 +89,7 @@ export default class AddWeightModal extends React.Component {
                   </View>
                 </TouchableOpacity>
               </View>
-            </View>
+            </KeyboardAvoidingView>
           </Dialog.ScrollArea>
         </Dialog>
       </Portal>
@@ -99,22 +100,6 @@ export default class AddWeightModal extends React.Component {
 const styles = {
   modalStyle: {
     paddingVertical: 10,
-    //backgroundColor: 'rgba(23,22,26,.9)',
-  },
-  headline: {
-    color: '#66fcf1',
-    fontSize: vh(5),
-  },
-  basicHeadline: {
-    fontSize: vh(4),
-    color: '#c5c6c7',
-  },
-  boldText: {
-    fontWeight: 'bold',
-    color: '#c5c6c7',
-  },
-  normalText: {
-    fontSize: vh(1.75),
-    color: '#c5c6c7',
+    marginBottom: 150,
   },
 };

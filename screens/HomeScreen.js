@@ -8,7 +8,6 @@ import {
   Image,
   KeyboardAvoidingView,
 } from 'react-native';
-import {Button} from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
 import Steps from '../components/steps';
 import MacroResults from '../components/MacroResults';
@@ -26,10 +25,8 @@ export default class HomeScreen extends React.Component {
   }
 
   async componentDidMount() {
-    //await AsyncStorage.removeItem('newWeights');
     let bmr = await AsyncStorage.getItem('bmr');
     if (bmr !== null) {
-      console.log('in index, bmr is not null');
       this.updateEntries().then(() => this.setState({showResults: true}));
     }
   }
@@ -40,7 +37,6 @@ export default class HomeScreen extends React.Component {
   };
 
   updateEntries = async () => {
-    console.log('bmr is not null');
     let feet = await AsyncStorage.getItem('feet');
     let inches = await AsyncStorage.getItem('inches');
     let weight = await AsyncStorage.getItem('weight');

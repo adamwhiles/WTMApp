@@ -11,7 +11,6 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import {TextInput} from 'react-native-paper';
 import {vw, vh} from 'react-native-expo-viewport-units';
 import AsyncStorage from '@react-native-community/async-storage';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
@@ -25,8 +24,6 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 
 import AddWeightModal from '../components/AddWeightModal';
 import ModifyWeightModal from '../components/ModifyWeightModal';
-import {isTemplateMiddleOrTemplateTail} from 'typescript';
-import {thisTypeAnnotation} from '@babel/types';
 
 const data = {
   labels: [],
@@ -83,7 +80,6 @@ export default class WeightScreen extends React.Component {
   };
 
   addWeight = async (date, weight) => {
-    console.log('add weight called');
     let newWeight = {
       date: date,
       weight: weight,
@@ -113,8 +109,6 @@ export default class WeightScreen extends React.Component {
   };
 
   showModifyModal = item => {
-    console.log('modify weight called');
-    console.log(item.item.weight);
     this.setState({modifyWeight: item.item, modifyModalVisible: true});
   };
 
@@ -197,7 +191,7 @@ export default class WeightScreen extends React.Component {
                   Track Your Weight
                 </Text>
               </View>
-              <ScrollView horizontal={true}>
+              <View>
                 {data.labels.length > 0 ? (
                   <LineChart
                     data={data}
@@ -230,7 +224,7 @@ export default class WeightScreen extends React.Component {
                     }}
                   />
                 ) : null}
-              </ScrollView>
+              </View>
               <View
                 style={{
                   flexDirection: 'row',

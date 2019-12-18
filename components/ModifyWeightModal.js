@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, TouchableOpacity} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import {Dialog, Portal, Text, TextInput} from 'react-native-paper';
 import {vw, vh} from 'react-native-expo-viewport-units';
 
@@ -12,9 +11,6 @@ export default class ModifyWeightModal extends React.Component {
 
   handleWeight = weight => {
     this.setState({weight: weight});
-  };
-  setDate = (event, newDate) => {
-    this.setState({date: newDate});
   };
   submit = () => {
     let weightRegEx = /^\d{2,3}\.\d{1}$/;
@@ -35,7 +31,8 @@ export default class ModifyWeightModal extends React.Component {
         <Dialog
           style={styles.modalStyle}
           visible={this.props.visible}
-          onDismiss={() => this.props.close()}>
+          onDismiss={() => this.props.close()}
+          dismissable={false}>
           <Dialog.ScrollArea>
             <View>
               <View
