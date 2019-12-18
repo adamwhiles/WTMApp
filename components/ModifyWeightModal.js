@@ -13,7 +13,7 @@ export default class ModifyWeightModal extends React.Component {
     this.setState({weight: weight});
   };
   submit = () => {
-    let weightRegEx = /^\d{2,3}\.\d{1}$/;
+    let weightRegEx = /^\d{1,3}\.?\d{1}$/;
     if (this.state.weight === 0 || this.state.weight === null) {
       alert('Please Enter A Valid Weight');
     } else {

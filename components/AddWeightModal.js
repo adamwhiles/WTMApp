@@ -17,7 +17,7 @@ export default class AddWeightModal extends React.Component {
     this.setState({date: newDate});
   };
   submit = () => {
-    let weightRegEx = /^\d{2,3}\.\d{1}$/;
+    let weightRegEx = /^\d{1,3}\.?\d{1}$/;
     if (this.state.weight > 0 && this.state.weight !== null) {
       let isValid = weightRegEx.test(this.state.weight);
       if (isValid) {
